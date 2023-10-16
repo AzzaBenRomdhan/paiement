@@ -1,0 +1,5 @@
+FROM openjdk:8-jdk-alpine
+WORKDIR /app/Payment
+COPY target/*.jar /app/Payment.jar
+EXPOSE 8888
+CMD ["java","-jar","/app/Payment.jar"]
