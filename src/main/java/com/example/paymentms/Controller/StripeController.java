@@ -6,6 +6,7 @@ import java.util.Map;
 import com.example.paymentms.Model.Payment;
 import com.example.paymentms.Repo.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import com.google.gson.Gson;
@@ -23,6 +24,9 @@ public class StripeController {
     @Autowired
     private PaymentRepository paymentRepository;
     // create a Gson object
+    @Value("${stripe.key.secret}")
+    private String stripeApiKey;
+
     private static Gson gson = new Gson();
 
     @PostMapping("/payment")
@@ -33,7 +37,7 @@ public class StripeController {
      */
     public String paymentWithCheckoutPage(@RequestBody CheckoutPayment payment) throws StripeException {
         // We initilize stripe object with the api key
-        init();
+        Stripe.apiKey = stripeApiKey;
         // We create a  stripe session parameters
         SessionCreateParams params = SessionCreateParams.builder()
                 // We will use the credit card payment method
@@ -71,7 +75,6 @@ public class StripeController {
 
 
 
-    private static void init() {
-        Stripe.apiKey = "sk_test_51O1aSpLAROZ6Bd7tQO8zkxaD7r9E0qWkcVXoVwcOfSpRno1fPw4Tp1QgCqygpGA4fJFQm5jijnyhLoBmsM1gDA1H00rVpMZTcQ";
-    }
+
+
 }
